@@ -1,0 +1,237 @@
+
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <title>My app2</title>
+</head>
+
+<body>
+    <header>
+        <h1>    QVIK  </h1>
+    </header>
+    <div>
+        <div>
+            <h2>Register</h2>
+            Name: <input type="text" id="name"><br>
+            Email: <input type="email" id="email"><br />
+            Password: <input type="password" id="pswHash"><br />
+            <button id="createUserButton">Create User</button>
+        </div>
+
+        <div>
+            <h2>Login</h2>
+            Email: <input type="email" id="loginEmail"><br />
+            Password: <input type="password" id="loginPassword"><br />
+            <button id="loginButton">Login</button>
+            <button id="logoutButton">Logout</button>
+        </div>
+
+        <div>
+            <h2>Delete User</h2>
+            <button id="deleteUserButton">Delete User</button>
+        </div>
+    </div>
+
+    <div id="userNotes">
+    </div>
+
+    <input type="text" id="newNoteInput" placeholder="Add a new note">
+    <button id="addNoteButton">Add Note</button>
+
+    <script>
+
+        let loggedInUser = null;
+
+        function dispNote(notes) {
+    const userNotesElement = document.getElementById("userNotes");
+    userNotesElement.innerHTML = "";  
+
+
+    notes.forEach((note, index) => {
+        const noteDiv = document.createElement("div");
+        noteDiv.classList.add("noteBox"); 
+        const firstWord = note.split(" ")[0];  
+        const restOfNote = note.substring(firstWord.length + 1);  
+
+   
+        const formattedNote = `<p><span style="font-weight: bold;">${firstWord}</span> ${restOfNote}</p>`;
+        noteDiv.innerHTML = formattedNote + `<button class="deleteNoteButton" data-index="${index}">Delete</button>`;
+        userNotesElement.appendChild(noteDiv);
+    });
+
+    const deleteNoteButtons = document.querySelectorAll(".deleteNoteButton");
+    deleteNoteButtons.forEach(button => {
+        button.addEventListener("click", deleteNote);
+    });
+}
+
+
+
+        const createUserButton = document.getElementById("createUserButton");
+        const loginButton = document.getElementById("loginButton");
+        const logoutButton = document.getElementById("logoutButton");
+        const deleteUserButton = document.getElementById("deleteUserButton");
+
+        const newNoteInput = document.getElementById("newNoteInput");
+        const addNoteButton = document.getElementById("addNoteButton");
+
+        createUserButton.onclick = async function (e) {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const pswHash = document.getElementById("pswHash").value;
+            const user = { name, email, password: pswHash };
+
+            const response = await fetch("/user", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(user),
+            });
+
+            const result = await response.json();
+            console.log(result);
+        };
+
+        loginButton.onclick = async function (e) {
+            const loginEmail = document.getElementById("loginEmail").value;
+            const loginPassword = document.getElementById("loginPassword").value;
+
+            const response = await fetch("/user/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email: loginEmail, password: loginPassword }),
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+                const { id, name, email, notes } = userData.user;
+
+                console.log("Login successful. User ID:", id, "Name:", name, "Notes:", notes);
+
+          
+                loggedInUser = { id, name, email, notes };
+
+      
+                dispNote(notes);
+            } else {
+                const error = await response.json();
+                console.error("Login failed:", error.message);
+
+          
+            }
+        };
+
+        logoutButton.onclick = function () {
+    
+        };
+
+        deleteUserButton.onclick = async function (e) {
+            if (loggedInUser) {
+                const response = await fetch(`/user/${loggedInUser.id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email: loggedInUser.email, password: loggedInUser.password }),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log("User deleted successfully:", result.message);
+
+                    loggedInUser = null;
+
+                } else {
+                    const error = await response.json();
+                    console.error("User deletion failed:", error.message);
+
+                
+                }
+            } else {
+                console.warn("User not logged in.");
+              
+            }
+        };
+
+        const deleteNote = async (event) => {
+            const noteIndex = event.target.getAttribute("data-index");
+
+            if (loggedInUser && loggedInUser.notes && loggedInUser.notes[noteIndex]) {
+                const deletedNote = loggedInUser.notes[noteIndex];
+                loggedInUser.notes.splice(noteIndex, 1);  
+
+                try {
+                    const response = await fetch(`/user/${loggedInUser.id}/notes/${noteIndex}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        console.log("Note deleted successfully:", result.message);
+
+                        dispNote(loggedInUser.notes);
+
+                    } else {
+                        const error = await response.json();
+                        console.error("Failed to delete note:", error.message);
+
+                    }
+                } catch (error) {
+                    console.error("Error deleting note:", error.message);
+
+                }
+            }
+        };
+
+        const addNote = () => {
+        const newNoteInput = document.getElementById("newNoteInput");
+        const newNote = newNoteInput.value;
+
+        if (newNote.trim() !== "") {
+            loggedInUser.notes.push(newNote);
+            dispNote(loggedInUser.notes);
+
+            fetch(`/user/${loggedInUser.id}/notes`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ notes: [newNote] }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to update notes in the database");
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    console.log("Notes updated in the database:", result.message);
+                })
+                .catch(error => {
+                    console.error("Error while updating notes:", error.message);
+                });
+
+            newNoteInput.value = "";
+        }
+    };
+
+    addNoteButton.onclick = addNote;
+
+    </script>
+
+</body>
+
+</html>

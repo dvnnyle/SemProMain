@@ -1,0 +1,81 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+header {
+    background-color: rgb(31, 31, 31);
+    color: white;
+    padding: 10px;
+    text-align: center;
+    width: calc(100% + 40px); /* 20px margin on each side of the body */
+    margin: -20px;
+    margin-bottom: 20px;
+}
+h2 {
+    color: #333;
+}
+
+/* Registration and Login Forms */
+div > div {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+/* Notetaking Section */
+#noteSection {
+    margin-top: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* User Information Section */
+#displayedUserName {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Delete User Form */
+#deleteUserButton {
+    background-color: #ff3333;
+    color: #fff;
+}
+
+#deleteUserButton:hover {
+    background-color: #cc0000;
+}
+.noteBox {
+    border: 1px solid #ccc;  /* Border style */
+    background-color: #f8f8f8;  /* Background color */
+    padding: 10px;  /* Padding inside the box */
+    margin-bottom: 10px;  /* Margin between boxes */
+}
