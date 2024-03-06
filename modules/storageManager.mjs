@@ -1,96 +1,80 @@
-import pg from "pg"
-import SuperLogger from "./SuperLogger.mjs";
-
-
-
-/// TODO: is the structure / design of the DBManager as good as it could be?
+import pg from "pg";
 
 class DBManager {
-
-    #credentials = {};
+    #pool;
 
     constructor(connectionString) {
-        this.#credentials = {
+        this.#pool = new pg.Pool({
             connectionString,
             ssl: (process.env.DB_SSL === "true") ? process.env.DB_SSL : false
-        };
+        });
+    }
 
+    async executeQuery(query, params = []) {
+        const client = await this.#pool.connect();
+        try {
+            const result = await client.query(query, params);
+            return result.rows;
+        } finally {
+            client.release();
+        }
     }
 
     async updateUser(user) {
-
-        const client = new pg.Client(this.#credentials);
-
+        const query = 'UPDATE "public"."Users" SET "name" = $1, "email" = $2, "password" = $3 WHERE id = $4';
         try {
-            await client.connect();
-            const output = await client.query('Update "public"."Users" set "name" = $1, "email" = $2, "password" = $3 where id = $4;', [user.name, user.email, user.pswHash, user.id]);
-
-            // Client.Query returns an object of type pg.Result (https://node-postgres.com/apis/result)
-            // Of special intrest is the rows and rowCount properties of this object.
-
-            //TODO Did we update the user?
-
+            await this.executeQuery(query, [user.name, user.email, user.pswHash, user.id]);
+            // TODO: Handle update success
+            console.log('User updated successfully');
         } catch (error) {
-            //TODO : Error handling?? Remember that this is a module seperate from your server 
-        } finally {
-            client.end(); // Always disconnect from the database.
+            // TODO: Handle update error
+            console.error('Error updating user:', error);
         }
-
         return user;
-
     }
 
     async deleteUser(user) {
-
-        const client = new pg.Client(this.#credentials);
-
+        const query = 'DELETE FROM "public"."Users" WHERE id = $1 RETURNING *';
         try {
-            await client.connect();
-            const output = await client.query('Delete from "public"."Users"  where id = $1;', [user.id]);
-
-            // Client.Query returns an object of type pg.Result (https://node-postgres.com/apis/result)
-            // Of special intrest is the rows and rowCount properties of this object.
-
-            //TODO: Did the user get deleted?
-
+            await this.executeQuery(query, [user.id]);
+            // TODO: Handle delete success
+            console.log('User deleted successfully');
         } catch (error) {
-            //TODO : Error handling?? Remember that this is a module seperate from your server 
-        } finally {
-            client.end(); // Always disconnect from the database.
+            // TODO: Handle delete error
+            console.error('Error deleting user:', error);
         }
-
         return user;
     }
 
     async createUser(user) {
-
-        const client = new pg.Client(this.#credentials);
-
+        const query = 'INSERT INTO "public"."Users"("name", "email", "password") VALUES($1, $2, $3) RETURNING id';
         try {
-            await client.connect();
-            const output = await client.query('INSERT INTO "public"."Users"("name", "email", "password") VALUES($1::Text, $2::Text, $3::Text) RETURNING id;', [user.name, user.email, user.pswHash]);
-
-            // Client.Query returns an object of type pg.Result (https://node-postgres.com/apis/result)
-            // Of special intrest is the rows and rowCount properties of this object.
-
-            if (output.rows.length == 1) {
-                // We stored the user in the DB.
-                user.id = output.rows[0].id;
+            const result = await this.executeQuery(query, [user.name, user.email, user.pswHash]);
+            if (result.length === 1) {
+                user.id = result[0].id;
             }
-
+            // TODO: Handle create success
+            console.log('User created successfully');
         } catch (error) {
-            console.error(error);
-            //TODO : Error handling?? Remember that this is a module seperate from your server 
-        } finally {
-            client.end(); // Always disconnect from the database.
+            // TODO: Handle create error
+            console.error('Error creating user:', error);
         }
-
         return user;
-
     }
-
 }
 
+let connectionString = process.env.ENVIORMENT === "local" ? process.env.DB_CONNECTIONSTRING_LOCAL : process.env.DB_CONNECTIONSTRING_PROD;
+// Use your preferred method for getting the connection string
+
+if (connectionString === undefined) {
+    throw new Error("You forgot the db connection string");
+}
+
+export default new DBManager(connectionString);
+
+
+
+/*
 // The following is thre examples of how to get the db connection string from the enviorment variables.
 // They accomplish the same thing but in different ways.
 // It is a judgment call which one is the best. But go for the one you understand the best.
@@ -112,7 +96,4 @@ connectionString = process.env["DB_CONNECTIONSTRING_" + process.env.ENVIORMENT.t
 if (connectionString == undefined) {
     throw ("You forgot the db connection string");
 }
-
-export default new DBManager(connectionString);
-
-//
+*/
