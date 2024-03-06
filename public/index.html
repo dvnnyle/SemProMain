@@ -39,12 +39,25 @@
         </div>
     </div>
 
+    <!-- Add this div for the edit form -->
+<div id="editUserSection">
+    <h2>Edit User Information</h2>
+    Name (Update): <input type="text" id="updateName"><br>
+    Email (Update): <input type="email" id="updateEmail"><br />
+    Password (Update): <input type="password" id="updatePassword"><br />
+    <button id="updateUserButton">Update User</button>
+</div>
+
+
     <div id="userNotes">
     </div>
 
     <input type="text" id="newNoteInput" placeholder="Add a new ">
     <button id="addNoteButton">Add Note</button>
 
+
+
+    
     <script>
 
         let loggedInUser = null;
@@ -81,6 +94,9 @@
 
         const newNoteInput = document.getElementById("newNoteInput");
         const addNoteButton = document.getElementById("addNoteButton");
+
+        const updateUserSection = document.getElementById("editUserSection");
+const updateUserButton = document.getElementById("updateUserButton");
 
         createUserButton.onclick = async function (e) {
             const name = document.getElementById("name").value;
@@ -229,6 +245,34 @@
     };
 
     addNoteButton.onclick = addNote;
+
+
+
+    updateUserButton.onclick = async function (e) {
+    const updateName = document.getElementById("updateName").value;
+    const updateEmail = document.getElementById("updateEmail").value;
+    const updatePassword = document.getElementById("updatePassword").value;
+
+    const updatedUser = { name: updateName, email: updateEmail, password: updatePassword };
+
+    const response = await fetch(`/user/${loggedInUser.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedUser),
+    });
+
+    if (response.ok) {
+        const result = await response.json();
+        console.log("User updated successfully:", result.message);
+
+        loggedInUser = { ...loggedInUser, ...result.user };
+    } else {
+        const error = await response.json();
+        console.error("User update failed:", error.message);
+    }
+};
 
     </script>
 

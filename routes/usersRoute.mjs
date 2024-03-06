@@ -152,6 +152,30 @@ USER_API.delete('/:userId/notes/:noteIndex', async (req, res) => {
     }
 });
 
+USER_API.put('/:id', async (req, res) => {
+    const userId = req.params.id;
+    const { name, email, password } = req.body;
 
+    if (name && email && password) {
+        try {
+            const result = await pool.query(
+                'UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *',
+                [name, email, password, userId]
+            );
+
+            if (result.rows.length === 0) {
+                res.status(HTTPCodes.ClientSideErrorRespons.NotFound).json({ error: 'User not found' });
+            } else {
+                const updatedUser = result.rows[0];
+                res.status(HTTPCodes.SuccesfullRespons.Ok).json({ message: 'User updated successfully', user: updatedUser });
+            }
+        } catch (error) {
+            console.error('Error updating user:', error);
+            res.status(HTTPCodes.ServerErrorRespons.InternalServerError).json({ error: 'Internal Server Error' });
+        }
+    } else {
+        res.status(HTTPCodes.ClientSideErrorRespons.BadRequest).json({ error: 'Bad Request', message: 'Missing data fields' });
+    }
+});
 
 export { USER_API };
