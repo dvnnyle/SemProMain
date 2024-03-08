@@ -4,6 +4,7 @@ import express from 'express';
 import pool from '../db.mjs'; // Update the path based on your actual structure
 import { HTTPCodes } from "../modules/httpConstants.mjs";
 import SuperLogger from "../modules/SuperLogger.mjs";
+import User from '../modules/user.mjs';
 
 const USER_API = express.Router();
 USER_API.use(express.json());
@@ -13,21 +14,27 @@ USER_API.get('/', (req, res, next) => {
     SuperLogger.log("An important msg", SuperLogger.LOGGING_LEVELS.CRITICAL);
 });
 
-USER_API.get('/:id', async (req, res, next) => {
+USER_API.put('/:id', async (req, res) => {
     const userId = req.params.id;
+    const { name, email, password } = req.body;
 
-    try {
-        const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId]);
+    if (name && email && password) {
+        try {
+            const userToUpdate = new User();
+            userToUpdate.id = userId;
+            userToUpdate.name = name;
+            userToUpdate.email = email;
+            userToUpdate.pswHash = password; // Update this to match your property name in the User class
 
-        if (result.rows.length === 0) {
-            res.status(HTTPCodes.ClientSideErrorRespons.NotFound).json({ error: 'User not found' });
-        } else {
-            const user = result.rows[0];
-            res.status(HTTPCodes.SuccesfullRespons.Ok).json(user);
+            const updatedUser = await userToUpdate.save();
+
+            res.status(HTTPCodes.SuccesfullRespons.Ok).json({ message: 'User updated successfully', user: updatedUser });
+        } catch (error) {
+            console.error('Error updating user:', error);
+            res.status(HTTPCodes.ServerErrorRespons.InternalServerError).json({ error: 'Internal Server Error' });
         }
-    } catch (error) {
-        console.error('Error fetching user:', error);
-        res.status(HTTPCodes.ServerErrorRespons.InternalServerError).json({ error: 'Internal Server Error' });
+    } else {
+        res.status(HTTPCodes.ClientSideErrorRespons.BadRequest).json({ error: 'Bad Request', message: 'Missing data fields' });
     }
 });
 
@@ -175,6 +182,24 @@ USER_API.put('/:id', async (req, res) => {
         }
     } else {
         res.status(HTTPCodes.ClientSideErrorRespons.BadRequest).json({ error: 'Bad Request', message: 'Missing data fields' });
+    }
+});
+
+USER_API.put('/:userId/notes', async (req, res) => {
+    const loggedInUserId = parseInt(req.params.userId);
+    const { notes } = req.body;
+
+    try {
+        const result = await pool.query('UPDATE users SET notes = $1 WHERE id = $2 RETURNING *', [notes, loggedInUserId]);
+
+        if (result.rows.length === 0) {
+            res.status(HTTPCodes.ClientSideErrorRespons.NotFound).json({ message: 'User not found' });
+        } else {
+            res.status(HTTPCodes.SuccesfullRespons.Ok).json({ message: 'Notes updated successfully', user: result.rows[0] });
+        }
+    } catch (error) {
+        console.error('Error updating notes:', error);
+        res.status(HTTPCodes.ServerErrorRespons.InternalServerError).json({ message: 'Internal Server Error' });
     }
 });
 
