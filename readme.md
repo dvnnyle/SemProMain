@@ -1,4 +1,4 @@
-## My App: QvikPost - Notetaker 📝
+# My App: QvikPost - Notetaker 📝
 Super simple PostIt Note like app, to quikly write what on your mind.
 
 ## Fazes: Functions too implemnts 🐌
