@@ -64,26 +64,31 @@
 
         function dispNote(notes) {
     const userNotesElement = document.getElementById("userNotes");
-    userNotesElement.innerHTML = "";  
+    userNotesElement.innerHTML = "";
 
+    // Check if notes is not null or undefined
+    if (notes && notes.length > 0) {
+        notes.forEach((note, index) => {
+            const noteDiv = document.createElement("div");
+            noteDiv.classList.add("noteBox");
+            const firstWord = note.split(" ")[0];
+            const restOfNote = note.substring(firstWord.length + 1);
 
-    notes.forEach((note, index) => {
-        const noteDiv = document.createElement("div");
-        noteDiv.classList.add("noteBox"); 
-        const firstWord = note.split(" ")[0];  
-        const restOfNote = note.substring(firstWord.length + 1);  
+            const formattedNote = `<p><span style="font-weight: bold;">${firstWord}</span> ${restOfNote}</p>`;
+            noteDiv.innerHTML = formattedNote + `<button class="deleteNoteButton" data-index="${index}">Delete</button>`;
+            userNotesElement.appendChild(noteDiv);
+        });
 
-   
-        const formattedNote = `<p><span style="font-weight: bold;">${firstWord}</span> ${restOfNote}</p>`;
-        noteDiv.innerHTML = formattedNote + `<button class="deleteNoteButton" data-index="${index}">Delete</button>`;
-        userNotesElement.appendChild(noteDiv);
-    });
-
-    const deleteNoteButtons = document.querySelectorAll(".deleteNoteButton");
-    deleteNoteButtons.forEach(button => {
-        button.addEventListener("click", deleteNote);
-    });
+        const deleteNoteButtons = document.querySelectorAll(".deleteNoteButton");
+        deleteNoteButtons.forEach(button => {
+            button.addEventListener("click", deleteNote);
+        });
+    } else {
+        // Handle the case where notes is null or empty
+        userNotesElement.innerHTML = "<p>No notes available.</p>";
+    }
 }
+
 
 
 
@@ -117,9 +122,10 @@ const updateUserButton = document.getElementById("updateUserButton");
         };
 
         loginButton.onclick = async function (e) {
-            const loginEmail = document.getElementById("loginEmail").value;
-            const loginPassword = document.getElementById("loginPassword").value;
+        const loginEmail = document.getElementById("loginEmail").value;
+        const loginPassword = document.getElementById("loginPassword").value;
 
+        try {
             const response = await fetch("/user/login", {
                 method: "POST",
                 headers: {
@@ -134,18 +140,20 @@ const updateUserButton = document.getElementById("updateUserButton");
 
                 console.log("Login successful. User ID:", id, "Name:", name, "Notes:", notes);
 
-          
-                loggedInUser = { id, name, email, notes };
+                loggedInUser = { id, name, email, notes: notes || [] };
 
-      
-                dispNote(notes);
+                // Fix the function name here
+                dispNote(loggedInUser.notes);
             } else {
                 const error = await response.json();
                 console.error("Login failed:", error.message);
-
-          
             }
-        };
+        } catch (error) {
+            console.error("Error logging in:", error.message);
+        }
+    };
+
+
 
         logoutButton.onclick = function () {
     

@@ -2104,3 +2104,199 @@ Database connection  postgresql://postgres:danny@localhost:5432/appx
 13:56:43 [32mGET[39m /styles.css
 13:56:47 [33mPOST[39m /user/login
 13:57:00 [33mPUT[39m /user/40
+####################
+Server enviorment undefined
+Database connection  undefined
+####################
+12:25:35 PM [32mGET[39m /
+12:25:35 PM [32mGET[39m /styles.css
+12:25:36 PM [32mGET[39m /
+12:25:36 PM [32mGET[39m /styles.css
+12:25:37 PM [32mGET[39m /
+12:25:37 PM [32mGET[39m /styles.css
+12:25:39 PM [32mGET[39m /styles.css
+12:25:45 PM [33mPOST[39m /user
+####################
+####################
+Database connection  undefined
+Server enviorment undefined
+12:26:52 PM [32mGET[39m /
+12:26:52 PM [32mGET[39m /styles.css
+12:27:08 PM [33mPOST[39m /user/login
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+12:27:44 PM [32mGET[39m /
+12:27:45 PM [32mGET[39m /styles.css
+12:27:51 PM [32mGET[39m /styles.css
+12:27:54 PM [33mPOST[39m /user
+12:27:58 PM [32mGET[39m /
+12:27:58 PM [32mGET[39m /styles.css
+12:28:02 PM [33mPOST[39m /user/login
+12:29:08 PM [32mGET[39m /
+12:29:08 PM [32mGET[39m /styles.css
+12:29:10 PM [33mPOST[39m /user/login
+12:30:04 PM [32mGET[39m /
+12:30:04 PM [32mGET[39m /styles.css
+12:30:08 PM [33mPOST[39m /user/login
+12:30:13 PM [33mPOST[39m /user/10/notes
+12:30:33 PM [33mPUT[39m /user/10
+12:30:51 PM [33mPOST[39m /user/login
+12:30:56 PM [32mGET[39m /
+12:30:56 PM [32mGET[39m /styles.css
+12:31:01 PM [33mPOST[39m /user/login
+12:31:04 PM [32mGET[39m /
+12:31:04 PM [32mGET[39m /styles.css
+12:31:07 PM [33mPOST[39m /user/login
+12:31:12 PM [32mGET[39m /
+12:31:12 PM [32mGET[39m /styles.css
+12:31:18 PM [33mPOST[39m /user/login
+12:31:20 PM [31mDELETE[39m /user/9
+12:42:34 PM [32mGET[39m /
+12:42:34 PM [32mGET[39m /styles.css
+12:42:36 PM [32mGET[39m /styles.css
+12:42:41 PM [33mPOST[39m /user/login
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+12:48:09 PM [32mGET[39m /
+12:48:09 PM [32mGET[39m /styles.css
+12:48:11 PM [32mGET[39m /styles.css
+####################
+####################
+Database connection  postgresql://postgres:danny@localhost:5432/app
+Server enviorment undefined
+12:48:29 PM [32mGET[39m /
+12:48:29 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+12:48:58 PM [32mGET[39m /
+12:48:58 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+12:51:27 PM [32mGET[39m /
+12:51:27 PM [32mGET[39m /styles.css
+12:51:29 PM [33mPOST[39m /user/login
+12:54:10 PM [32mGET[39m /
+12:54:10 PM [32mGET[39m /styles.css
+12:54:13 PM [33mPOST[39m /user/login
+12:54:41 PM [32mGET[39m /
+12:54:42 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+12:55:22 PM [32mGET[39m /
+12:55:22 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+12:58:11 PM [32mGET[39m /
+12:58:11 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+1:00:18 PM [32mGET[39m /
+1:00:18 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+1:02:08 PM [32mGET[39m /
+1:02:09 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+1:18:55 PM [32mGET[39m /
+1:18:55 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+1:24:52 PM [32mGET[39m /
+1:24:52 PM [32mGET[39m /styles.css
+1:24:55 PM [33mPOST[39m /user/login
+1:29:33 PM [32mGET[39m /
+1:29:33 PM [32mGET[39m /styles.css
+1:29:36 PM [33mPOST[39m /user/login
+1:31:00 PM [32mGET[39m /
+1:31:00 PM [32mGET[39m /styles.css
+1:31:03 PM [33mPOST[39m /user/login
+1:33:16 PM [32mGET[39m /
+1:33:16 PM [32mGET[39m /styles.css
+1:33:18 PM [33mPOST[39m /user/login
+1:35:48 PM [32mGET[39m /
+1:35:48 PM [32mGET[39m /styles.css
+1:35:51 PM [33mPOST[39m /user/login
+####################
+####################
+Database connection  postgresql://postgres:danny@localhost:5432/app
+Server enviorment undefined
+1:36:04 PM [32mGET[39m /
+1:36:04 PM [32mGET[39m /styles.css
+1:36:07 PM [33mPOST[39m /user/login
+1:37:42 PM [32mGET[39m /
+1:37:42 PM [32mGET[39m /styles.css
+1:37:42 PM [32mGET[39m /
+1:37:42 PM [32mGET[39m /styles.css
+1:37:43 PM [32mGET[39m /
+1:37:43 PM [32mGET[39m /styles.css
+1:37:45 PM [33mPOST[39m /user/login
+1:37:55 PM [33mPOST[39m /user
+####################
+####################
+Database connection  postgresql://postgres:danny@localhost:5432/app
+Server enviorment undefined
+1:38:19 PM [32mGET[39m /
+1:38:19 PM [32mGET[39m /styles.css
+1:38:21 PM [33mPOST[39m /user/login
+1:39:08 PM [33mPOST[39m /user/10/notes
+1:45:06 PM [32mGET[39m /
+1:45:06 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+1:45:23 PM [32mGET[39m /
+1:45:23 PM [32mGET[39m /styles.css
+1:45:24 PM [32mGET[39m /
+1:45:24 PM [32mGET[39m /styles.css
+1:45:25 PM [32mGET[39m /
+1:45:25 PM [32mGET[39m /styles.css
+1:45:30 PM [33mPOST[39m /user/login
+1:45:36 PM [31mDELETE[39m /user/10/notes/0
+1:45:38 PM [32mGET[39m /
+1:45:38 PM [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/app
+####################
+1:46:36 PM [32mGET[39m /
+1:46:36 PM [32mGET[39m /styles.css
+1:46:42 PM [33mPOST[39m /user/login
+1:47:07 PM [33mPOST[39m /user/10/notes
+1:47:12 PM [31mDELETE[39m /user/10/notes/0
+1:47:13 PM [31mDELETE[39m /user/10/notes/0
+1:47:19 PM [33mPOST[39m /user/10/notes
+1:47:25 PM [32mGET[39m /
+1:47:25 PM [32mGET[39m /styles.css
+1:47:30 PM [33mPOST[39m /user/login
+1:47:39 PM [32mGET[39m /
+1:47:39 PM [32mGET[39m /styles.css
+1:48:00 PM [33mPOST[39m /user
+1:48:06 PM [33mPOST[39m /user/login
+1:48:13 PM [33mPOST[39m /user/login
+1:48:13 PM [33mPOST[39m /user/login
+1:48:31 PM [33mPOST[39m /user/login
+1:48:37 PM [33mPOST[39m /user/11/notes
+1:48:39 PM [33mPOST[39m /user/11/notes
+1:48:40 PM [31mDELETE[39m /user/11/notes/0
