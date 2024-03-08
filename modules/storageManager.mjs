@@ -22,12 +22,12 @@ class DBManager {
 
   async updateUser(user) {
     const query =
-      'UPDATE "public"."Users" SET "name" = $1, "email" = $2, "password" = $3 WHERE id = $4';
+      'UPDATE users SET "name" = $1, "email" = $2, "password" = $3 WHERE id = $4';
     try {
       await this.executeQuery(query, [
         user.name,
         user.email,
-        user.pswHash,
+        user.pswHash, // Use 'password' property here
         user.id,
       ]);
       console.log('User updated successfully');
@@ -40,7 +40,7 @@ class DBManager {
 
   async deleteUser(user) {
     const query =
-      'DELETE FROM "public"."Users" WHERE id = $1 RETURNING *';
+      'DELETE FROM users WHERE id = $1 RETURNING *';
     try {
       await this.executeQuery(query, [user.id]);
       console.log('User deleted successfully');
@@ -53,12 +53,12 @@ class DBManager {
 
   async createUser(user) {
     const query =
-      'INSERT INTO "public"."Users"("name", "email", "password") VALUES($1, $2, $3) RETURNING id';
+      'INSERT INTO users("name", "email", "password") VALUES($1, $2, $3) RETURNING id';
     try {
       const result = await this.executeQuery(query, [
         user.name,
         user.email,
-        user.pswHash,
+        user.password, // Use 'password' property here
       ]);
       if (result.length === 1) {
         user.id = result[0].id;
