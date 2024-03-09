@@ -55,47 +55,38 @@
   <script>
     let loggedInUser = null;
 
-function dispNote(notes) {
-  const userNotesElement = document.getElementById("userNotes");
-  userNotesElement.innerHTML = "";
+    function dispNote(notes) {
+      const userNotesElement = document.getElementById("userNotes");
+      userNotesElement.innerHTML = "";
 
-  if (notes && notes.length > 0) {
-    notes.forEach((note, index) => {
-      const noteDiv = document.createElement("div");
-      noteDiv.classList.add("noteBox");
+      if (notes && notes.length > 0) {
+        notes.forEach((note, index) => {
+          const noteDiv = document.createElement("div");
+          noteDiv.classList.add("noteBox");
+          const firstWord = note.split(" ")[0];
+          const restOfNote = note.substring(firstWord.length + 1);
 
-      // Display title
-      const titleElement = document.createElement("h3");
-      titleElement.textContent = note.title;
-      noteDiv.appendChild(titleElement);
+          const formattedNote = `<p><span style="font-weight: bold;">${firstWord}</span> ${restOfNote}</p>`;
+          noteDiv.innerHTML =
+            formattedNote +
+            `<button class="editNoteButton" data-index="${index}">Edit</button>` +
+            `<button class="deleteNoteButton" data-index="${index}">Delete</button>`;
+          userNotesElement.appendChild(noteDiv);
+        });
 
-      // Display content
-      const contentElement = document.createElement("p");
-      contentElement.innerHTML = `<span style="font-weight: bold;">${note.content}</span>`;
-      noteDiv.appendChild(contentElement);
+        const deleteNoteButtons = document.querySelectorAll(".deleteNoteButton");
+        deleteNoteButtons.forEach(button => {
+          button.addEventListener("click", deleteNote);
+        });
 
-      // Add buttons
-      noteDiv.innerHTML +=
-        `<button class="editNoteButton" data-index="${index}">Edit</button>` +
-        `<button class="deleteNoteButton" data-index="${index}">Delete</button>`;
-
-      userNotesElement.appendChild(noteDiv);
-    });
-
-    const deleteNoteButtons = document.querySelectorAll(".deleteNoteButton");
-    deleteNoteButtons.forEach(button => {
-      button.addEventListener("click", deleteNote);
-    });
-
-    const editNoteButtons = document.querySelectorAll(".editNoteButton");
-    editNoteButtons.forEach(button => {
-      button.addEventListener("click", editNote);
-    });
-  } else {
-    userNotesElement.innerHTML = "<p>No notes available.</p>";
-  }
-}
-
+        const editNoteButtons = document.querySelectorAll(".editNoteButton");
+        editNoteButtons.forEach(button => {
+          button.addEventListener("click", editNote);
+        });
+      } else {
+        userNotesElement.innerHTML = "<p>No notes available.</p>";
+      }
+    }
 
     const createUserButton = document.getElementById("createUserButton");
     const loginButton = document.getElementById("loginButton");
@@ -251,34 +242,17 @@ function dispNote(notes) {
       }
     };
 
+    addNoteButton.onclick = () => {
+      const newNoteInput = document.getElementById("newNoteInput");
+      const newNote = newNoteInput.value.trim();
 
+      if (newNote !== "") {
+        loggedInUser.notes.push(newNote);
+        updateNotesOnServer(loggedInUser.notes);
 
-    function generateTimestamp() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-
-  return `${year}-${month}-${day}`;
-}
-
-
-addNoteButton.onclick = () => {
-  const newNoteInput = document.getElementById("newNoteInput");
-  const newNoteContent = newNoteInput.value.trim();
-
-  if (newNoteContent !== "") {
-    const timestamp = generateTimestamp();
-    const newNote = { title: timestamp, content: newNoteContent };
-
-    loggedInUser.notes.push(newNote);
-    updateNotesOnServer(loggedInUser.notes);
-
-    newNoteInput.value = "";
-  }
-};
-
-
+        newNoteInput.value = "";
+      }
+    };
 
     updateUserButton.onclick = async function (e) {
       const updateName = document.getElementById("updateName").value;
