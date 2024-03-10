@@ -27,7 +27,7 @@ Super simple PostIt Note like app, to quikly write what on your mind.
 - Database/Server
 - Render
 
- ##Value 🛋️**
+**Value 🛋️**
 Difficulty: Moderate 
 Scope: Moderate 
 Skill alignment: Ok-ambitious
