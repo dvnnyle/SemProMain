@@ -4574,3 +4574,9 @@ Database connection  postgresql://postgres:danny@localhost:5432/appx
 18:05:11 [32mGET[39m /styles.css
 18:05:15 [32mGET[39m /
 18:05:15 [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+####################
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+18:14:12 [32mGET[39m /
+18:14:12 [32mGET[39m /styles.css
