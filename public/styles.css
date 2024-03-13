@@ -109,6 +109,18 @@ button:hover {
     transform: scale(1.02);
 }
 
+#editNoteContent{
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    margin: 10px auto;
+    box-sizing: border-box;
+    color: white;
+    border-radius: 10px;
+    background-color: #ffffff;
+    display: block;
+}
+
 #addNoteButton {
     display: block;
     margin: 0 auto;
@@ -220,7 +232,7 @@ ul {
     padding: 5px;
 }
 
-#editNotePopup {
+#sNotePopup {
     display: none;
     max-width: 100%;
     margin: 20px auto;
@@ -240,11 +252,14 @@ ul {
     justify-content: center;
     align-items: flex-start;
     gap: 20px;
+    margin-top: 50px;
 }
 
 .noteBox {
     width: calc(25% - 40px);
     min-width: 200px;
+    max-height: 300px; /* Set a maximum height */
+    overflow: hidden; /* Hide overflow content */
     box-sizing: border-box;
     background-color: #232323;
     color: white;
@@ -255,6 +270,7 @@ ul {
     transition: box-shadow 0.3s;
     box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
 }
+
 
 #newNoteInput {
     width: 60%;
@@ -279,13 +295,13 @@ ul {
     margin-right: 10px;
     gap: 10px;
     cursor: pointer;
-    background-color: #232323;
-    color: white;
+    background-color: #2e2e2e;
+    color: #99999a;
     border: none;
     padding: 5px 10px;
     border-radius: 10px;
 }
 
 .noteBox button:hover {
-    background-color: #3367d6;
-}
+color: #ffffff;}
+

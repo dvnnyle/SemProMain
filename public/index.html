@@ -45,6 +45,7 @@
       <button id="logoutButton">Logout</button>
     </div>
 
+    
 
 
   <div id="editUserPopup" class="popup" style="display: none;">
@@ -67,13 +68,13 @@
   </div>
 
   
-  
 
 
 <textarea id="titleInput" placeholder="Start with a title" rows="1"></textarea>
 <textarea id="noteInput" placeholder="Write a Note..." rows="3"></textarea>
 <button id="addNoteButton">ADD NOTE</button>
 <div id="userNotes"></div>
+
 
 
   <script>
@@ -320,17 +321,18 @@ document.getElementById("updateNoteButton").onclick = function () {
       year: "numeric",
       month: "numeric",
       day: "numeric",
-
     };
     const timestamp = new Date().toLocaleString(undefined, options);
 
-    const formattedNote = `<h2>${title}</h2><p>${noteContent}</p>`;
+    // Replace newlines with <br> tags for line breaks
+    const formattedNote = `<h2>${title}</h2><p>${noteContent.replace(/\n/g, '<br>')}</p>`;
     loggedInUser.notes.push(`${timestamp}  ${formattedNote}`);
     updateNotesOnServer(loggedInUser.notes);
 
     const noteDiv = document.createElement("div");
     noteDiv.classList.add("noteCard", "new-note");
 
+    // Use innerHTML to render HTML content correctly
     noteDiv.innerHTML = `<p>${timestamp} - ${formattedNote}</p>` +
       `<button class="editNoteButton" data-index="${loggedInUser.notes.length - 1}">Edit</button>` +
       `<button class="deleteNoteButton" data-index="${loggedInUser.notes.length - 1}">Delete</button>`;
@@ -346,6 +348,10 @@ document.getElementById("updateNoteButton").onclick = function () {
     }, 3000);
   }
 };
+
+
+
+
 
 
 
@@ -420,8 +426,3 @@ closeEditUserPopupButton.onclick = function () {
 </body>
 
 </html>
-<style>
-
- 
-
-</style>
