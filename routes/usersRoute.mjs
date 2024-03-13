@@ -5,9 +5,13 @@ import pool from '../db.mjs'; // Update the path based on your actual structure
 import { HTTPCodes } from "../modules/httpConstants.mjs";
 import SuperLogger from "../modules/SuperLogger.mjs";
 import User from '../modules/user.mjs';
+import fileUpload from 'express-fileupload';
+
 
 const USER_API = express.Router();
 USER_API.use(express.json());
+USER_API.use(fileUpload());
+
 
 USER_API.get('/', (req, res, next) => {
     SuperLogger.log("Demo of logging tool");
@@ -202,6 +206,8 @@ USER_API.put('/:userId/notes', async (req, res) => {
         res.status(HTTPCodes.ServerErrorRespons.InternalServerError).json({ message: 'Internal Server Error' });
     }
 });
+
+
 
 
 export { USER_API };

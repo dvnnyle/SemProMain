@@ -1,6 +1,3 @@
-
-<!-- index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,24 +5,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
 
-  <title>My app2</title>
+
+    </span>
+  <title>QVIK</title>
 </head>
-
 <body>
-  <header>
-    <h1>QVIK</h1>
-  </header>
-  <div>
-    <div>
-      <h2>Register</h2>
-      Name: <input type="text" id="name"><br>
-      Email: <input type="email" id="email"><br />
-      Password: <input type="password" id="pswHash"><br />
-      <button id="createUserButton">Create User</button>
-    </div>
 
-    <div>
+    </span>
+  <header>
+    <div class="icon-container">
+      <i class="material-icons-outlined" id="openRegisterPopup" title="Register">person</i>
+      <i class="material-icons-outlined" id="openLoginPopup" title="Login"> sentiment_satisfied
+        </i>
+        <i class="material-icons-outlined" id="openEditUserPopup" title="User Settings">edit</i>
+    </div>
+    <h1 id="pageTit">QVIK</h1>
+</header>
+  <div>
+
+<div id="registerPopup" class="popup" style="display: none;">
+  <button class="closeButton" id="closeRegisterPopup">&times;</button>
+  <h2>Register</h2>
+  Name: <input type="text" id="name"><br>
+  Email: <input type="email" id="email"><br />
+  Password: <input type="password" id="pswHash"><br />
+  <button id="createUserButton">Create User</button>
+</div>
+
+
+    <div id="loginPopup" class="popup" style="display: none;">
+      <button class="closeButton" id="closeLoginPopup">&times;</button>
       <h2>Login</h2>
       Email: <input type="email" id="loginEmail"><br />
       Password: <input type="password" id="loginPassword"><br />
@@ -33,27 +45,50 @@
       <button id="logoutButton">Logout</button>
     </div>
 
-    <div>
-      <h2>Delete User</h2>
-      <button id="deleteUserButton">Delete User</button>
-    </div>
-  </div>
 
-  <div id="editUserSection">
+
+  <div id="editUserPopup" class="popup" style="display: none;">
+    <button class="closeButton" id="closeEditUserPopup">&times;</button>
     <h2>Edit User Information</h2>
     Name (Update): <input type="text" id="updateName"><br>
     Email (Update): <input type="email" id="updateEmail"><br />
     Password (Update): <input type="password" id="updatePassword"><br />
     <button id="updateUserButton">Update User</button>
+    <h2>Delete User</h2>
+    <button id="deleteUserButton">Delete User</button>
   </div>
 
-  <div id="userNotes">
+  <div id="editNotePopup" class="popup" style="display: none;">
+    <button class="closeButton" id="closeEditNotePopup">&times;</button>
+    <h2>Edit Note</h2>
+    Title (Update): <input type="text" id="editNoteTitle"><br>
+    Content (Update): <textarea id="editNoteContent" rows="3"></textarea>
+    <button id="updateNoteButton">Update Note</button>
   </div>
-  <textarea id="newNoteInput" placeholder="Add a new note"></textarea>
-  <button id="addNoteButton">Add Note</button>
+
+  
+  
+
+
+<textarea id="titleInput" placeholder="Start with a title" rows="1"></textarea>
+<textarea id="noteInput" placeholder="Write a Note..." rows="3"></textarea>
+<button id="addNoteButton">ADD NOTE</button>
+<div id="userNotes"></div>
+
 
   <script>
     let loggedInUser = null;
+
+    const createUserButton = document.getElementById("createUserButton");
+    const loginButton = document.getElementById("loginButton");
+    const logoutButton = document.getElementById("logoutButton");
+    const deleteUserButton = document.getElementById("deleteUserButton");
+
+    const newNoteInput = document.getElementById("newNoteInput");
+    const addNoteButton = document.getElementById("addNoteButton");
+
+    const updateUserSection = document.getElementById("editUserSection");
+    const updateUserButton = document.getElementById("updateUserButton");
 
     function dispNote(notes) {
       const userNotesElement = document.getElementById("userNotes");
@@ -88,17 +123,6 @@
       }
     }
 
-    const createUserButton = document.getElementById("createUserButton");
-    const loginButton = document.getElementById("loginButton");
-    const logoutButton = document.getElementById("logoutButton");
-    const deleteUserButton = document.getElementById("deleteUserButton");
-
-    const newNoteInput = document.getElementById("newNoteInput");
-    const addNoteButton = document.getElementById("addNoteButton");
-
-    const updateUserSection = document.getElementById("editUserSection");
-    const updateUserButton = document.getElementById("updateUserButton");
-
     const updateNotesOnServer = async (notes) => {
       try {
         const response = await fetch(`/user/${loggedInUser.id}/notes`, {
@@ -123,18 +147,45 @@
       }
     };
 
-    const editNote = (event) => {
-      const noteIndex = event.target.getAttribute("data-index");
 
-      if (loggedInUser && loggedInUser.notes && loggedInUser.notes[noteIndex]) {
-        const editedNote = prompt("Edit note:", loggedInUser.notes[noteIndex]);
+let noteIndex; 
 
-        if (editedNote !== null) {
-          loggedInUser.notes[noteIndex] = editedNote;
-          updateNotesOnServer(loggedInUser.notes);
-        }
-      }
-    };
+const editNote = (event) => {
+  noteIndex = event.target.getAttribute("data-index");
+
+  if (loggedInUser && loggedInUser.notes && loggedInUser.notes[noteIndex]) {
+    const editedNote = loggedInUser.notes[noteIndex];
+    const [currentTitle, currentContent] = extractTitleAndContent(editedNote);
+
+    document.getElementById("editNoteTitle").value = currentTitle;
+    document.getElementById("editNoteContent").value = currentContent;
+
+  
+    editNotePopup.style.display = "block";
+  }
+};
+
+document.getElementById("updateNoteButton").onclick = function () {
+  const updatedTitle = document.getElementById("editNoteTitle").value.trim();
+  const updatedContent = document.getElementById("editNoteContent").value.trim();
+
+  if (updatedTitle !== "" && updatedContent !== "") {
+    const timestamp = loggedInUser.notes[noteIndex].split(" ")[0];
+    const updatedNote = `${timestamp}  <h2>${updatedTitle}</h2><p>${updatedContent}</p>`;
+    loggedInUser.notes[noteIndex] = updatedNote;
+    updateNotesOnServer(loggedInUser.notes);
+
+    editNotePopup.style.display = "none";
+  }
+};
+
+  const extractTitleAndContent = (note) => {
+    const doc = new DOMParser().parseFromString(note, 'text/html');
+    const title = doc.querySelector('h2').textContent || '';
+    const content = doc.querySelector('p').textContent || '';
+    return [title, content];
+  };
+
 
     const deleteNote = async (event) => {
       const noteIndex = event.target.getAttribute("data-index");
@@ -215,7 +266,23 @@
     };
 
     logoutButton.onclick = function () {
-      // Implement logout logic if needed
+      if (loggedInUser) {
+        loggedInUser = null;
+
+        const userNotesElement = document.getElementById("userNotes");
+        userNotesElement.innerHTML = "<p>No user logged in.</p>";
+
+        document.getElementById("loginEmail").value = "";
+        document.getElementById("loginPassword").value = "";
+
+        document.querySelector("div").style.display = "block";
+        document.getElementById("editUserSection").style.display = "none";
+
+        logoutButton.style.display = "none";
+        deleteUserButton.style.display = "none";
+      } else {
+        console.warn("User not logged in.");
+      }
     };
 
     deleteUserButton.onclick = async function (e) {
@@ -241,19 +308,48 @@
         console.warn("User not logged in.");
       }
     };
-
     addNoteButton.onclick = () => {
-      const newNoteInput = document.getElementById("newNoteInput");
-      const newNote = newNoteInput.value.trim();
+  const titleInput = document.getElementById("titleInput");
+  const noteInput = document.getElementById("noteInput");
 
-      if (newNote !== "") {
-        loggedInUser.notes.push(newNote);
-        updateNotesOnServer(loggedInUser.notes);
+  const title = titleInput.value.trim();
+  const noteContent = noteInput.value.trim();
 
-        newNoteInput.value = "";
-      }
+  if (noteContent !== "") {
+    const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+
     };
+    const timestamp = new Date().toLocaleString(undefined, options);
 
+    const formattedNote = `<h2>${title}</h2><p>${noteContent}</p>`;
+    loggedInUser.notes.push(`${timestamp}  ${formattedNote}`);
+    updateNotesOnServer(loggedInUser.notes);
+
+    const noteDiv = document.createElement("div");
+    noteDiv.classList.add("noteCard", "new-note");
+
+    noteDiv.innerHTML = `<p>${timestamp} - ${formattedNote}</p>` +
+      `<button class="editNoteButton" data-index="${loggedInUser.notes.length - 1}">Edit</button>` +
+      `<button class="deleteNoteButton" data-index="${loggedInUser.notes.length - 1}">Delete</button>`;
+
+    const userNotesElement = document.getElementById("userNotes");
+    userNotesElement.appendChild(noteDiv);
+
+    titleInput.value = "";
+    noteInput.value = "";
+
+    setTimeout(() => {
+      noteDiv.classList.remove("new-note");
+    }, 3000);
+  }
+};
+
+
+
+  
     updateUserButton.onclick = async function (e) {
       const updateName = document.getElementById("updateName").value;
       const updateEmail = document.getElementById("updateEmail").value;
@@ -280,6 +376,43 @@
       }
     };
 
+    const openRegisterPopupButton = document.getElementById("openRegisterPopup");
+    const closeRegisterPopupButton = document.getElementById("closeRegisterPopup");
+    const registerPopup = document.getElementById("registerPopup");
+
+    openRegisterPopupButton.onclick = function () {
+      registerPopup.style.display = "block";
+    };
+
+    closeRegisterPopupButton.onclick = function () {
+      registerPopup.style.display = "none";
+    };
+
+
+    const openLoginPopupButton = document.getElementById("openLoginPopup");
+    const closeLoginPopupButton = document.getElementById("closeLoginPopup");
+    const loginPopup = document.getElementById("loginPopup");
+
+    openLoginPopupButton.onclick = function () {
+      loginPopup.style.display = "block";
+    };
+
+    closeLoginPopupButton.onclick = function () {
+      loginPopup.style.display = "none";
+    };
+
+    const openEditUserPopupButton = document.getElementById("openEditUserPopup");
+const closeEditUserPopupButton = document.getElementById("closeEditUserPopup");
+const editUserPopup = document.getElementById("editUserPopup");
+
+openEditUserPopupButton.onclick = function () {
+  editUserPopup.style.display = "block";
+};
+
+closeEditUserPopupButton.onclick = function () {
+  editUserPopup.style.display = "none";
+};
+
 
 
   </script>
@@ -287,3 +420,8 @@
 </body>
 
 </html>
+<style>
+
+ 
+
+</style>

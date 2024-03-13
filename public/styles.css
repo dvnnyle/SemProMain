@@ -1,24 +1,48 @@
-/* styles.css */
-
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     margin: 20px;
+    overflow-x: hidden;
+    background-color: #232323;
+}
+
+h1,h2,h3{
+    font-family: 'Montserrat', sans-serif;
 }
 
 header {
     background-color: rgb(31, 31, 31);
     color: white;
-    padding: 10px;
-    text-align: center;
-    width: calc(100% + 40px); /* 20px margin on each side of the body */
+    padding: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% + 40px);
     margin: -20px;
     margin-bottom: 20px;
 }
-h2 {
-    color: #333;
+
+.icon-container {
+    display: flex;
 }
 
-/* Registration and Login Forms */
+.icon-container i {
+    margin-right: 10px;
+}
+
+h1 {
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+    margin-right: 220px;
+    font-size: 60px;
+    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+}
+
+h2 {
+    color: #ffffff;
+}
+
 div > div {
     margin-bottom: 20px;
 }
@@ -27,55 +51,241 @@ input[type="text"],
 input[type="email"],
 input[type="password"] {
     width: 100%;
-    padding: 8px;
-    margin: 8px 0;
+    padding: 10px;
+    margin: 10px 0;
     box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 20px;
 }
 
 button {
-    padding: 10px;
+    padding: 12px;
     cursor: pointer;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 10px;
 }
 
 button:hover {
-    background-color: #ddd;
+    background-color: #ffffff;
+    color: black;
 }
 
-/* Notetaking Section */
 #noteSection {
     margin-top: 20px;
 }
 
-textarea {
-    width: 100%;
-    padding: 8px;
-    margin: 8px 0;
+#titleInput {
+    width: 30%;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 10px;
+    margin: 10px auto;
     box-sizing: border-box;
+    color: white;
+    border-radius: 10px;
+    background-color: #232323;
+    display: block;
+    box-shadow: 0px 0px 4px rgb(255, 255, 255);
+    transition: transform 0.3s ease-in-out;
 }
+
+#noteInput {
+    width: 30%;
+    padding: 10px;
+    font-size: 18px;
+    margin: 10px auto;
+    box-sizing: border-box;
+    color: white;
+    border-radius: 10px;
+    background-color: #232323;
+    display: block;
+    box-shadow: 0px 0px 4px rgb(255, 255, 255);
+    transition: transform 0.3s ease-in-out;
+}
+
+#titleInput:focus, #noteInput:focus {
+    transform: scale(1.02);
+}
+
+#addNoteButton {
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: solid 1px;
+    background-color: #232323;
+    color: #ffffff63;
+    box-shadow: 0px 0px 5px rgb(255, 255, 255);
+
+}
+
+#addNoteButton:hover {
+    background-color: #ffffff;
+    border: none;
+    color: #232323;
+    box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.7);
+}
+
 
 ul {
     list-style-type: none;
     padding: 0;
 }
 
-/* User Information Section */
 #displayedUserName {
     font-weight: bold;
     margin-top: 10px;
 }
 
-/* Delete User Form */
 #deleteUserButton {
     background-color: #ff3333;
     color: #fff;
+    border: none;
+    border-radius:10px;
+    padding: 12px;
 }
 
 #deleteUserButton:hover {
     background-color: #cc0000;
 }
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    padding: 20px;
+    background-color: #1f1f1f;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    z-index: 999;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+.popup h2 {
+    margin-bottom: 10px;
+}
+
+.popup input,
+.popup button {
+    margin-top: 10px;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: #555;
+}
+
+.closeButton:hover {
+    color: #333;
+}
+
+.material-icons-outlined,
+#registerPopup .material-icons,
+#loginPopup .material-icons,
+#editUserPopup .material-icons {
+    font-size: 40px !important;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #242424;
+    text-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+    background-color: #2e2e2e;
+    border-radius: 20px;
+    display: inline-block;
+    padding: 5px;
+}
+
+#editNotePopup {
+    display: none;
+    max-width: 100%;
+    margin: 20px auto;
+    background-color: #1f1f1f;
+    border-radius: 20px;
+}
+
+#editedNoteInput {
+    width: 100%;
+    height: 150px;
+    color: #2f2f2f;
+}
+
+#userNotes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+}
+
 .noteBox {
-    border: 1px solid #ccc;  /* Border style */
-    background-color: #f8f8f8;  /* Background color */
-    padding: 10px;  /* Padding inside the box */
-    margin-bottom: 10px;  /* Margin between boxes */
+    width: calc(25% - 40px);
+    min-width: 200px;
+    box-sizing: border-box;
+    background-color: #232323;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 20px;
+    transition: box-shadow 0.3s;
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+}
+
+#newNoteInput {
+    width: 60%;
+    height: 150px;
+    padding: 8px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    display: block;
+    font-size: 20px;
+    padding: 20px;
+}
+
+
+
+.noteBox.new-note {
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    color: black;
+}
+
+.noteBox button {
+    margin-right: 10px;
+    gap: 10px;
+    cursor: pointer;
+    background-color: #232323;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.noteBox button:hover {
+    background-color: #3367d6;
 }
