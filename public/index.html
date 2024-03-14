@@ -7,6 +7,8 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
 
 
     </span>
@@ -29,18 +31,19 @@
 <div id="registerPopup" class="popup" style="display: none;">
   <button class="closeButton" id="closeRegisterPopup">&times;</button>
   <h2>Register</h2>
-  Name: <input type="text" id="name"><br>
-  Email: <input type="email" id="email"><br />
-  Password: <input type="password" id="pswHash"><br />
+  Name: <input type="text" id="name" placeholder="ex. Kevin Levin"><br>
+Email: <input type="email" id="email" placeholder="ex. Kevin@mail.com"><br />
+Password: <input type="password" id="pswHash" placeholder="ex. Password1233"><br />
+
   <button id="createUserButton">Create User</button>
 </div>
 
 
     <div id="loginPopup" class="popup" style="display: none;">
       <button class="closeButton" id="closeLoginPopup">&times;</button>
-      <h2>Login</h2>
-      Email: <input type="email" id="loginEmail"><br />
-      Password: <input type="password" id="loginPassword"><br />
+      <h2>Login // Out</h2>
+      Email: <input type="email" id="loginEmail" placeholder="email@mail.com"><br />
+      Password: <input type="password" id="loginPassword" placeholder="Password123"><br />
       <button id="loginButton">Login</button>
       <button id="logoutButton">Logout</button>
     </div>
@@ -51,9 +54,9 @@
   <div id="editUserPopup" class="popup" style="display: none;">
     <button class="closeButton" id="closeEditUserPopup">&times;</button>
     <h2>Edit User Information</h2>
-    Name (Update): <input type="text" id="updateName"><br>
-    Email (Update): <input type="email" id="updateEmail"><br />
-    Password (Update): <input type="password" id="updatePassword"><br />
+    Name (Update): <input type="text" id="updateName" placeholder="New Name"><br>
+    Email (Update): <input type="email" id="updateEmail" placeholder="NewEmail@gmail.com"><br />
+    Password (Update): <input type="password" id="updatePassword" placeholder="New Password 123"><br />
     <button id="updateUserButton">Update User</button>
     <h2>Delete User</h2>
     <button id="deleteUserButton">Delete User</button>
@@ -75,6 +78,12 @@
 <button id="addNoteButton">ADD NOTE</button>
 <div id="userNotes"></div>
 
+<div id="loginToGetStartedMessage" style="display: none;">
+  <p>Please login to get started.</p>
+</div>
+<div id="welcomeMessage" style="display: none;">
+  <p>You are logged in <span id="loggedInUserName"></span>!</p>
+</div>
 
 
   <script>
@@ -92,37 +101,45 @@
     const updateUserButton = document.getElementById("updateUserButton");
 
     function dispNote(notes) {
-      const userNotesElement = document.getElementById("userNotes");
-      userNotesElement.innerHTML = "";
+  const userNotesElement = document.getElementById("userNotes");
+  userNotesElement.innerHTML = "";
 
-      if (notes && notes.length > 0) {
-        notes.forEach((note, index) => {
-          const noteDiv = document.createElement("div");
-          noteDiv.classList.add("noteBox");
-          const firstWord = note.split(" ")[0];
-          const restOfNote = note.substring(firstWord.length + 1);
+  if (notes && notes.length > 0) {
+    notes.forEach((note, index) => {
+      const noteDiv = document.createElement("div");
+      noteDiv.classList.add("noteBox");
+      const firstWord = note.split(" ")[0];
+      const restOfNote = note.substring(firstWord.length + 1);
 
-          const formattedNote = `<p><span style="font-weight: bold;">${firstWord}</span> ${restOfNote}</p>`;
-          noteDiv.innerHTML =
-            formattedNote +
-            `<button class="editNoteButton" data-index="${index}">Edit</button>` +
-            `<button class="deleteNoteButton" data-index="${index}">Delete</button>`;
-          userNotesElement.appendChild(noteDiv);
-        });
+      const formattedNote = `<p><span style="font-weight: bold;">${firstWord}</span> ${restOfNote}</p>`;
+      noteDiv.innerHTML =
+        formattedNote +
+        `<button class="editNoteButton" data-index="${index}">Edit</button>` +
+        `<button class="deleteNoteButton" data-index="${index}">Delete</button>` ;
+      userNotesElement.appendChild(noteDiv);
+    });
 
-        const deleteNoteButtons = document.querySelectorAll(".deleteNoteButton");
-        deleteNoteButtons.forEach(button => {
-          button.addEventListener("click", deleteNote);
-        });
+    const deleteNoteButtons = document.querySelectorAll(".deleteNoteButton");
+    deleteNoteButtons.forEach(button => {
+      button.addEventListener("click", deleteNote);
+    });
 
-        const editNoteButtons = document.querySelectorAll(".editNoteButton");
-        editNoteButtons.forEach(button => {
-          button.addEventListener("click", editNote);
-        });
-      } else {
-        userNotesElement.innerHTML = "<p>No notes available.</p>";
-      }
-    }
+    const editNoteButtons = document.querySelectorAll(".editNoteButton");
+    editNoteButtons.forEach(button => {
+      button.addEventListener("click", editNote);
+    });
+
+    const downloadNoteButtons = document.querySelectorAll(".downloadNoteButton");
+    downloadNoteButtons.forEach(button => {
+      button.addEventListener("click", downloadNoteAsPNG);
+    });
+  } else {
+    userNotesElement.innerHTML = "<p>No notes available.</p>";
+  }
+}
+
+
+
 
     const updateNotesOnServer = async (notes) => {
       try {
@@ -187,6 +204,13 @@ document.getElementById("updateNoteButton").onclick = function () {
     return [title, content];
   };
 
+const closeEditNotePopup = () => {
+  editNotePopup.style.display = "none";
+};
+
+document.getElementById("closeEditNotePopup").addEventListener("click", closeEditNotePopup);
+
+
 
     const deleteNote = async (event) => {
       const noteIndex = event.target.getAttribute("data-index");
@@ -236,35 +260,44 @@ document.getElementById("updateNoteButton").onclick = function () {
     };
 
     loginButton.onclick = async function (e) {
-      const loginEmail = document.getElementById("loginEmail").value;
-      const loginPassword = document.getElementById("loginPassword").value;
+  const loginEmail = document.getElementById("loginEmail").value;
+  const loginPassword = document.getElementById("loginPassword").value;
 
-      try {
-        const response = await fetch("/user/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: loginEmail, password: loginPassword }),
-        });
+  try {
+    const response = await fetch("/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: loginEmail, password: loginPassword }),
+    });
 
-        if (response.ok) {
-          const userData = await response.json();
-          const { id, name, email, notes } = userData.user;
+    if (response.ok) {
+      const userData = await response.json();
+      const { id, name, email, notes } = userData.user;
 
-          console.log("Login successful. User ID:", id, "Name:", name, "Notes:", notes);
+      console.log("Login successful. User ID:", id, "Name:", name, "Notes:", notes);
 
-          loggedInUser = { id, name, email, notes: notes || [] };
+      loggedInUser = { id, name, email, notes: notes || [] };
 
-          dispNote(loggedInUser.notes);
-        } else {
-          const error = await response.json();
-          console.error("Login failed:", error.message);
-        }
-      } catch (error) {
-        console.error("Error logging in:", error.message);
-      }
-    };
+      dispNote(loggedInUser.notes);
+
+      // Show welcome message for 5 seconds
+      const welcomeMessageDiv = document.getElementById("welcomeMessage");
+      welcomeMessageDiv.style.display = "block";
+
+      setTimeout(() => {
+        welcomeMessageDiv.style.display = "none";
+      }, 5000);
+    } else {
+      const error = await response.json();
+      console.error("Login failed:", error.message);
+    }
+  } catch (error) {
+    console.error("Error logging in:", error.message);
+  }
+};
+
 
     logoutButton.onclick = function () {
       if (loggedInUser) {
@@ -309,30 +342,41 @@ document.getElementById("updateNoteButton").onclick = function () {
         console.warn("User not logged in.");
       }
     };
-    addNoteButton.onclick = () => {
+
+
+addNoteButton.onclick = () => {
   const titleInput = document.getElementById("titleInput");
   const noteInput = document.getElementById("noteInput");
 
   const title = titleInput.value.trim();
   const noteContent = noteInput.value.trim();
 
+  // Function to format note content with clickable links
+  const formatNoteContent = (content) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const formattedContent = content.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+    return formattedContent;
+  };
+
+  // Format note content with clickable links
+  const formattedNoteContent = formatNoteContent(noteContent);
+
   if (noteContent !== "") {
     const options = {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-    };
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+};
+    
     const timestamp = new Date().toLocaleString(undefined, options);
 
-    // Replace newlines with <br> tags for line breaks
-    const formattedNote = `<h2>${title}</h2><p>${noteContent.replace(/\n/g, '<br>')}</p>`;
+    const formattedNote = `<h2>${title}</h2><p>${formattedNoteContent.replace(/\n/g, '<br>')}</p>`;
     loggedInUser.notes.push(`${timestamp}  ${formattedNote}`);
     updateNotesOnServer(loggedInUser.notes);
 
     const noteDiv = document.createElement("div");
     noteDiv.classList.add("noteCard", "new-note");
 
-    // Use innerHTML to render HTML content correctly
     noteDiv.innerHTML = `<p>${timestamp} - ${formattedNote}</p>` +
       `<button class="editNoteButton" data-index="${loggedInUser.notes.length - 1}">Edit</button>` +
       `<button class="deleteNoteButton" data-index="${loggedInUser.notes.length - 1}">Delete</button>`;
@@ -348,6 +392,7 @@ document.getElementById("updateNoteButton").onclick = function () {
     }, 3000);
   }
 };
+
 
 
 
@@ -419,6 +464,21 @@ closeEditUserPopupButton.onclick = function () {
   editUserPopup.style.display = "none";
 };
 
+const showLoginMessage = () => {
+  const loginMessageDiv = document.getElementById("loginToGetStartedMessage");
+  if (!loggedInUser) {
+    loginMessageDiv.style.display = "block";
+  } else {
+    loginMessageDiv.style.display = "none";
+  }
+};
+
+showLoginMessage();
+
+setTimeout(() => {
+  const loginMessageDiv = document.getElementById("loginToGetStartedMessage");
+  loginMessageDiv.style.display = "none";
+}, 5000);
 
 
   </script>
