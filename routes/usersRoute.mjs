@@ -5,7 +5,6 @@ import pool from '../db.mjs';
 import { HTTPCodes } from "../modules/httpConstants.mjs";
 import SuperLogger from "../modules/SuperLogger.mjs";
 import User from '../modules/user.mjs';
-import sessionMiddleware from '../modules/sessionMiddleware.mjs'; // Import session middleware
 
 
 const USER_API = express.Router();

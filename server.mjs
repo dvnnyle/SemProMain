@@ -6,7 +6,6 @@ import pool from './db.mjs';
 import { USER_API } from './routes/usersRoute.mjs';
 import SuperLogger from './modules/SuperLogger.mjs';
 import printDeveloperStartupInportantInformationMSG from './modules/developerHelpers.mjs';
-import sessionMiddleware from './modules/sessionMiddleware.mjs';
 
 printDeveloperStartupInportantInformationMSG();
 
@@ -16,8 +15,6 @@ server.set('port', port);
 
 const logger = new SuperLogger();
 server.use(logger.createAutoHTTPRequestLogger());
-
-server.use(sessionMiddleware);
 
 
 
