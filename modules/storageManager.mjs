@@ -27,13 +27,13 @@ class DBManager {
       await this.executeQuery(query, [
         user.name,
         user.email,
-        user.pswHash, // Use 'password' property here
+        user.pswHash, 
         user.id,
       ]);
       console.log('User updated successfully');
     } catch (error) {
       console.error('Error updating user:', error);
-      throw error; // Propagate the error for handling in the calling code
+      throw error; 
     }
     return user;
   }
@@ -46,7 +46,7 @@ class DBManager {
       console.log('User deleted successfully');
     } catch (error) {
       console.error('Error deleting user:', error);
-      throw error; // Propagate the error for handling in the calling code
+      throw error; 
     }
     return user;
   }
@@ -58,7 +58,7 @@ class DBManager {
       const result = await this.executeQuery(query, [
         user.name,
         user.email,
-        user.password, // Use 'password' property here
+        user.password, 
       ]);
       if (result.length === 1) {
         user.id = result[0].id;
@@ -66,7 +66,7 @@ class DBManager {
       console.log('User created successfully');
     } catch (error) {
       console.error('Error creating user:', error);
-      throw error; // Propagate the error for handling in the calling code
+      throw error; 
     }
     return user;
   }

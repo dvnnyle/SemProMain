@@ -1,16 +1,15 @@
 // usersRoute.mjs
 
 import express from 'express';
-import pool from '../db.mjs'; // Update the path based on your actual structure
+import pool from '../db.mjs'; 
 import { HTTPCodes } from "../modules/httpConstants.mjs";
 import SuperLogger from "../modules/SuperLogger.mjs";
 import User from '../modules/user.mjs';
-import fileUpload from 'express-fileupload';
+import sessionMiddleware from '../modules/sessionMiddleware.mjs'; // Import session middleware
 
 
 const USER_API = express.Router();
 USER_API.use(express.json());
-USER_API.use(fileUpload());
 
 
 USER_API.get('/', (req, res, next) => {
@@ -28,7 +27,7 @@ USER_API.put('/:id', async (req, res) => {
             userToUpdate.id = userId;
             userToUpdate.name = name;
             userToUpdate.email = email;
-            userToUpdate.pswHash = password; // Update this to match your property name in the User class
+            userToUpdate.pswHash = password; 
 
             const updatedUser = await userToUpdate.save();
 

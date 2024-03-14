@@ -14,7 +14,7 @@ Super simple PostIt Note like app, to quikly write what on your mind.
     - User info
     - Notes
 
-**Prio #3: Add On, Maybe, just maybe, if time**
+**Faze #3: Add On, Maybe, just maybe, if time**
 - Translate option?
 - Sharing option?
 

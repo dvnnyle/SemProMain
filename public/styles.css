@@ -265,8 +265,8 @@ ul {
 .noteBox {
     width: calc(25% - 40px);
     min-width: 200px;
-    max-height: 300px; /* Set a maximum height */
-    overflow: hidden; /* Hide overflow content */
+    max-height: 300px; 
+    overflow: hidden; 
     box-sizing: border-box;
     background-color: #232323;
     color: white;
@@ -348,4 +348,31 @@ color: #ffffff;}
   
   
 
+  #userCreatedMessage {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #FFDB58;
+    color: rgb(0, 0, 0);
+    padding: 10px 70px; 
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+  }
+
+  #userDeletedMessage {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #FF6347; /* Change color as needed */
+    color: #FFFFFF; /* Change text color as needed */
+    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+  }
   

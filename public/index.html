@@ -9,8 +9,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
-
-
     </span>
   <title>QVIK</title>
 </head>
@@ -84,6 +82,10 @@ Password: <input type="password" id="pswHash" placeholder="ex. Password1233"><br
 <div id="welcomeMessage" style="display: none;">
   <p>You are logged in <span id="loggedInUserName"></span>!</p>
 </div>
+<div id="userCreatedMessage" style="display: none;">
+  <p>User created successfully! Please login to get started.</p>
+</div>
+
 
 
   <script>
@@ -183,6 +185,7 @@ const editNote = (event) => {
   }
 };
 
+
 document.getElementById("updateNoteButton").onclick = function () {
   const updatedTitle = document.getElementById("editNoteTitle").value.trim();
   const updatedContent = document.getElementById("editNoteContent").value.trim();
@@ -242,22 +245,32 @@ document.getElementById("closeEditNotePopup").addEventListener("click", closeEdi
     };
 
     createUserButton.onclick = async function (e) {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const pswHash = document.getElementById("pswHash").value;
-      const user = { name, email, password: pswHash };
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const pswHash = document.getElementById("pswHash").value;
+  const user = { name, email, password: pswHash };
 
-      const response = await fetch("/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
+  const response = await fetch("/user", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
 
-      const result = await response.json();
-      console.log(result);
-    };
+  const result = await response.json();
+  console.log(result);
+
+  if (response.ok) {
+    const userCreatedMessageDiv = document.getElementById("userCreatedMessage");
+    userCreatedMessageDiv.style.display = "block";
+
+    setTimeout(() => {
+      userCreatedMessageDiv.style.display = "none";
+    }, 5000);
+  }
+};
+
 
     loginButton.onclick = async function (e) {
   const loginEmail = document.getElementById("loginEmail").value;
@@ -282,7 +295,6 @@ document.getElementById("closeEditNotePopup").addEventListener("click", closeEdi
 
       dispNote(loggedInUser.notes);
 
-      // Show welcome message for 5 seconds
       const welcomeMessageDiv = document.getElementById("welcomeMessage");
       welcomeMessageDiv.style.display = "block";
 
@@ -351,14 +363,12 @@ addNoteButton.onclick = () => {
   const title = titleInput.value.trim();
   const noteContent = noteInput.value.trim();
 
-  // Function to format note content with clickable links
   const formatNoteContent = (content) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const formattedContent = content.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
     return formattedContent;
   };
 
-  // Format note content with clickable links
   const formattedNoteContent = formatNoteContent(noteContent);
 
   if (noteContent !== "") {
@@ -394,12 +404,6 @@ addNoteButton.onclick = () => {
 };
 
 
-
-
-
-
-
-
   
     updateUserButton.onclick = async function (e) {
       const updateName = document.getElementById("updateName").value;
@@ -427,6 +431,9 @@ addNoteButton.onclick = () => {
       }
     };
 
+
+    
+
     const openRegisterPopupButton = document.getElementById("openRegisterPopup");
     const closeRegisterPopupButton = document.getElementById("closeRegisterPopup");
     const registerPopup = document.getElementById("registerPopup");
@@ -443,6 +450,9 @@ addNoteButton.onclick = () => {
     const openLoginPopupButton = document.getElementById("openLoginPopup");
     const closeLoginPopupButton = document.getElementById("closeLoginPopup");
     const loginPopup = document.getElementById("loginPopup");
+    const openEditUserPopupButton = document.getElementById("openEditUserPopup");
+    const closeEditUserPopupButton = document.getElementById("closeEditUserPopup");
+    const editUserPopup = document.getElementById("editUserPopup");
 
     openLoginPopupButton.onclick = function () {
       loginPopup.style.display = "block";
@@ -452,17 +462,13 @@ addNoteButton.onclick = () => {
       loginPopup.style.display = "none";
     };
 
-    const openEditUserPopupButton = document.getElementById("openEditUserPopup");
-const closeEditUserPopupButton = document.getElementById("closeEditUserPopup");
-const editUserPopup = document.getElementById("editUserPopup");
+    openEditUserPopupButton.onclick = function () {
+      editUserPopup.style.display = "block";
+    };
 
-openEditUserPopupButton.onclick = function () {
-  editUserPopup.style.display = "block";
-};
-
-closeEditUserPopupButton.onclick = function () {
-  editUserPopup.style.display = "none";
-};
+    closeEditUserPopupButton.onclick = function () {
+      editUserPopup.style.display = "none";
+    };
 
 const showLoginMessage = () => {
   const loginMessageDiv = document.getElementById("loginToGetStartedMessage");
