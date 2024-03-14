@@ -81,5 +81,4 @@ if (connectionString === undefined) {
   throw new Error("You forgot the db connection string");
 }
 
-
 export default new DBManager(connectionString);
