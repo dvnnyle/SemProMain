@@ -77,8 +77,9 @@ let connectionString =
     ? process.env.DB_CONNECTIONSTRING_LOCAL
     : process.env.DB_CONNECTIONSTRING_PROD;
 
-if (connectionString === undefined) {
+if (process.env.ENVIRONMENT !== "local" && connectionString === undefined) {
   throw new Error("You forgot the db connection string");
 }
+
 
 export default new DBManager(connectionString);

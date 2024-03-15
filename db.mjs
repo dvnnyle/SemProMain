@@ -1,16 +1,13 @@
 import pkg from 'pg';
 import dotenv from 'dotenv';
 
-dotenv.config(); 
+dotenv.config();
 
 const { Pool } = pkg;
 
 const pool = new Pool({
-  connectionString:
-    process.env.ENVIRONMENT === 'local'
-      ? process.env.DB_CONNECTIONSTRING_LOCAL
-      : process.env.DB_CONNECTIONSTRING_PROD,
-  ssl: process.env.ENVIRONMENT !== 'local' ? { rejectUnauthorized: false } : false,
+  connectionString: process.env.ENVIRONMENT === 'local' ? process.env.DB_CONNECTIONSTRING_LOCAL : process.env.DB_CONNECTIONSTRING_PROD,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
 });
 
 pool.on('error', (err) => {

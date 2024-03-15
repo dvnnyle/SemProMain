@@ -5548,3 +5548,68 @@ Server enviorment undefined
 ####################
 Database connection  postgresql://postgres:danny@localhost:5432/appx
 ####################
+####################
+Server enviorment undefined
+####################
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+00:52:38 [32mGET[39m /
+00:52:38 [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  undefined
+####################
+00:53:23 [32mGET[39m /
+00:53:23 [32mGET[39m /styles.css
+00:53:33 [32mGET[39m /styles.css
+00:53:34 [33mPOST[39m /user
+####################
+Server enviorment undefined
+Database connection  undefined
+####################
+####################
+Server enviorment undefined
+####################
+Database connection  undefined
+####################
+Server enviorment undefined
+Database connection  postgresql://qvik:wDSOCQuAReFf6mdhnsBgvg58K24alKoK@dpg-cnpodevsc6pc73b59k00-a.frankfurt-postgres.render.com/appdb_q1c2
+####################
+00:55:47 [32mGET[39m /
+00:55:48 [32mGET[39m /styles.css
+00:56:18 [33mPOST[39m /user/login
+####################
+Server enviorment undefined
+Database connection  postgresql://qvik:wDSOCQuAReFf6mdhnsBgvg58K24alKoK@dpg-cnpodevsc6pc73b59k00-a.frankfurt-postgres.render.com/appdb_q1c2
+####################
+00:58:25 [32mGET[39m /
+00:58:25 [32mGET[39m /styles.css
+00:58:28 [33mPOST[39m /user
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+01:02:02 [32mGET[39m /
+01:02:03 [32mGET[39m /styles.css
+01:02:06 [32mGET[39m /
+01:02:06 [32mGET[39m /styles.css
+01:02:08 [32mGET[39m /styles.css
+01:02:12 [33mPOST[39m /user/login
+01:02:22 [33mPOST[39m /user
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appdb_q1c2
+####################
+01:03:36 [32mGET[39m /
+01:03:36 [32mGET[39m /styles.css
+01:03:39 [33mPOST[39m /user/login
+####################
+Server enviorment undefined
+####################
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+01:07:31 [32mGET[39m /
+01:07:31 [32mGET[39m /styles.css
+01:07:37 [32mGET[39m /styles.css
