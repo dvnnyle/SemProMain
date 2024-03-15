@@ -1,15 +1,19 @@
 import pkg from 'pg';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config(); 
 
 const { Pool } = pkg;
 
 const pool = new Pool({
-  connectionString: process.env.ENVIRONMENT === 'local' ? process.env.DB_CONNECTIONSTRING_LOCAL : process.env.DB_CONNECTIONSTRING_PROD,
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
+  connectionString:
+    process.env.ENVIRONMENT === 'production' // Check if environment is 'production'
+      ? process.env.DB_CONNECTIONSTRING_PROD // Use production connection string
+      : process.env.DB_CONNECTIONSTRING_LOCAL, // Use local connection string for other environments
+  ssl: process.env.ENVIRONMENT === 'production' ? { rejectUnauthorized: false } : false, // Disable SSL only for production
 });
 
+// Event listeners for pool
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
   process.exit(-1);

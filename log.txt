@@ -5613,3 +5613,80 @@ Database connection  postgresql://postgres:danny@localhost:5432/appx
 01:07:31 [32mGET[39m /
 01:07:31 [32mGET[39m /styles.css
 01:07:37 [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  undefined
+####################
+####################
+####################
+Server enviorment undefined
+Database connection  undefined
+####################
+Server enviorment undefined
+####################
+Database connection  undefined
+####################
+Server enviorment undefined
+####################
+Database connection  undefined
+####################
+Server enviorment undefined
+####################
+Database connection  undefined
+####################
+####################
+Server enviorment undefined
+Database connection  undefined
+####################
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+####################
+Server enviorment undefined
+####################
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+####################
+Server enviorment undefined
+####################
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+01:24:19 [32mGET[39m /
+01:24:19 [32mGET[39m /styles.css
+01:24:22 [33mPOST[39m /user/login
+01:24:25 [32mGET[39m /styles.css
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+####################
+Server enviorment undefined
+Database connection  postgresql://postgres:danny@localhost:5432/appx
+####################
+####################
+Server enviorment undefined
+Database connection  undefined
+####################
+####################
+Server enviorment undefined
+####################
+Database connection  postgres://qvik:wDSOCQuAReFf6mdhnsBgvg58K24alKoK@dpg-cnpodevsc6pc73b59k00-a.frankfurt-postgres.render.com/appdb_q1c2
+01:28:35 [32mGET[39m /
+01:28:35 [32mGET[39m /styles.css
+01:28:38 [33mPOST[39m /user/login
+01:28:47 [32mGET[39m /styles.css
+01:28:55 [33mPOST[39m /user
